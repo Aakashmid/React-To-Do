@@ -1,7 +1,7 @@
 import React from 'react'
 
 
-export const AddTaskModel = ({newTask,setNewTask,addTask,close,formInvalid}) => {
+export const AddTaskModel = ({newTask,setNewTask,addTask,close}) => {
 
     const handleChange=(e)=>{
         const {id,value}=e.target
@@ -16,11 +16,11 @@ export const AddTaskModel = ({newTask,setNewTask,addTask,close,formInvalid}) => 
         <form onSubmit={addTask} className='flex-col flex space-y-4 mt-6 lg:p-3 p-2' >
             <div className="flex flex-col items-start">
                 <label htmlFor="desc">What is to be done ?</label>
-                <input className='focus:outline-blue-300 outline outline-offset-1 outline-none border rounded p-2 w-full ' id='desc' placeholder='Enter task here' type="text" value={newTask.desc} onChange={handleChange} />
+                <input className='focus:outline-blue-300 outline outline-offset-1 outline-none border rounded p-2 w-full ' id='desc' placeholder='Enter task here' type="text" value={newTask.desc} onChange={handleChange} required />
             </div>
             <div className="flex  items-start">
                 <label htmlFor="desc">Prioriy :  </label>
-                <select  id="priority" className='focus:outline-blue-300 outline outline-offset-1 outline-none rounded' value={newTask.priority} onChange={handleChange} >
+                <select  id="priority" className='focus:outline-blue-300 outline outline-offset-1 outline-none rounded' value={newTask.priority} onChange={handleChange} required >
                     <option value="low">low</option>
                     <option value="medium">medium</option>
                     <option value="high">high</option>
@@ -29,11 +29,8 @@ export const AddTaskModel = ({newTask,setNewTask,addTask,close,formInvalid}) => 
 
             <div className="flex flex-col items-start">
                 <label htmlFor="due_time">Due date time</label>
-                <input id='due_time' className='focus:outline-blue-300 outline outline-offset-1 outline-none border rounded p-2'  type="datetime-local" value={newTask.due_time} onChange={handleChange} />
+                <input id='due_time' className='focus:outline-blue-300 outline outline-offset-1 outline-none border rounded p-2'  type="datetime-local" value={newTask.due_time} onChange={handleChange} required />
             </div>
-
-            {formInvalid && <p className='text-red-600  '>All value required !!</p>}
-
             <button className=' py-2 rounded w-fit  px-10 bg-blue-500 text-white hover:bg-blue-600 ' type='submit'>Add Task </button>
         </form>
     </div>

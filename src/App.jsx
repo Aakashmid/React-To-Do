@@ -4,8 +4,7 @@ import { TaskList } from './componensts/TaskList'
 import { AddTaskModel } from './componensts/AddTaskModel'
 
 function App() {
-  const [formInvalid,setforminvalid]= useState(false)
-
+  
   const [tasks, setTasks] = useState({items:[],Newtask:{desc:'',due_time:'',priority:'low'}}) 
   const [isTaskModelOpen,setIsTaskModelOpen]=useState(false)
 
@@ -16,8 +15,8 @@ function App() {
 
   // close Add task  model 
   const closeTaskModel=()=>{
-    setforminvalid(false)
     setIsTaskModelOpen(false)
+    setNewTask({desc:'',due_time:'',priority:'low'});   // set form empty when form desappear
   }
 
   // for adding task in items
@@ -26,12 +25,10 @@ function App() {
     if (tasks.Newtask.desc !=='' && tasks.Newtask.due_time !=='' && tasks.Newtask.priority !=='') { 
       const newTaskItems=[...tasks.items,tasks.Newtask]
       setTasks({items:newTaskItems,Newtask:{desc:'',due_time:'',priority:'low'}});
-      setforminvalid(false);  // for showing error if any field is empty
       setIsTaskModelOpen(false);
     }
     else{
       setIsTaskModelOpen(true);
-      setforminvalid(true);
     }
   }
 
@@ -58,7 +55,7 @@ function App() {
           <TaskList allTasks={tasks.items} />
         </div>
 
-        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask}  close={closeTaskModel} formInvalid={formInvalid}/>}
+        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask}  close={closeTaskModel} />}
         {/* setNewTask={()=>{setNewTask}} */}
       </div>
      
