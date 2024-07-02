@@ -1,42 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { TaskList } from './componensts/TaskList'
 import { AddTaskModel } from './componensts/AddTaskModel'
 
 function App() {
-  
-  const [tasks, setTasks] = useState({items:[],Newtask:{desc:'',due_time:'',priority:'low'}}) 
-  const [isTaskModelOpen,setIsTaskModelOpen]=useState(false)
+
+  const [tasks, setTasks] = useState({ items: [], Newtask: { desc: '', due_time: '', priority: 'low' } })
+
+
+  // using  storege 
+  // const [tasks, setTasks] = useState(() => {
+  //   const savedTasks = localStorage.getItem('tasks');
+  //   return savedTasks ? JSON.parse(savedTasks) : { items: [], NewTask: {desc: '', due_time: '', priority: 'low' } };
+  // });
+
+  // // Save tasks to localStorage whenever they change
+  // useEffect(() => {
+  //   localStorage.setItem('tasks', JSON.stringify(tasks));
+  // }, [tasks]);
+
+  const [isTaskModelOpen, setIsTaskModelOpen] = useState(false)
 
   // open addtask model
-  const openTaskModel=()=>{
+  const openTaskModel = () => {
     setIsTaskModelOpen(true)
   }
 
   // close Add task  model 
-  const closeTaskModel=()=>{
+  const closeTaskModel = () => {
     setIsTaskModelOpen(false)
-    setNewTask({desc:'',due_time:'',priority:'low'});   // set form empty when form desappear
+    setNewTask({ desc: '', due_time: '', priority: 'low' });   // set form empty when form desappear
   }
 
   // for adding task in items
-  const AddTask=(e)=>{
+  const AddTask = (e) => {
     e.preventDefault();
-    if (tasks.Newtask.desc !=='' && tasks.Newtask.due_time !=='' && tasks.Newtask.priority !=='') { 
-      const newTaskItems=[...tasks.items,tasks.Newtask]
-      setTasks({items:newTaskItems,Newtask:{desc:'',due_time:'',priority:'low'}});
+    if (tasks.Newtask.desc !== '' && tasks.Newtask.due_time !== '' && tasks.Newtask.priority !== '') {
+      const newTaskItems = [...tasks.items, tasks.Newtask]
+      setTasks({ items: newTaskItems, Newtask: { desc: '', due_time: '', priority: 'low' } });
       setIsTaskModelOpen(false);
     }
-    else{
+    else {
       setIsTaskModelOpen(true);
     }
   }
 
   // set value of new task
-  const setNewTask=(taskDetails)=>{
-   setTasks(prevState=>({
-    ...prevState,Newtask:taskDetails  //destructuring old data and then update property Newtask
-   }))
+  const setNewTask = (taskDetails) => {
+    setTasks(prevState => ({
+      ...prevState, Newtask: taskDetails  //destructuring old data and then update property Newtask
+    }))
+  }
+
+  
+  const [activeLinkIndex,setActiveLink]=useState(null);
+  const handleActiveLink=(index)=>{
+    setActiveLink(index)
   }
   return (
     <>
@@ -45,9 +64,9 @@ function App() {
         <div className="nav-options mt-8">
           <ul className='flex space-x-2'>
             <li onClick={openTaskModel} className='grow-[2] bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 mr-6 cursor-pointer text-lg'>Add a new task</li>
-            <li className='grow bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg'>All</li>
-            <li className='grow bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg'>Tasks</li>
-            <li className='grow bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg'>Completed</li>
+            <li className={`${activeLinkIndex===0? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `}  onClick={()=>handleActiveLink(0)} >All</li>
+            <li className={`${activeLinkIndex===1? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg`} onClick={()=>handleActiveLink(1)} >Active Tasks</li>
+            <li className={`${activeLinkIndex===2? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `}  onClick={()=>handleActiveLink(2)} >Completed</li>
           </ul>
         </div>
 
@@ -55,10 +74,10 @@ function App() {
           <TaskList allTasks={tasks.items} />
         </div>
 
-        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask}  close={closeTaskModel} />}
+        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask} close={closeTaskModel} />}
         {/* setNewTask={()=>{setNewTask}} */}
       </div>
-     
+
     </>
   )
 }

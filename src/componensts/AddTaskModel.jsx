@@ -19,7 +19,7 @@ export const AddTaskModel = ({newTask,setNewTask,addTask,close}) => {
                 <input className='focus:outline-blue-300 outline outline-offset-1 outline-none border rounded p-2 w-full ' id='desc' placeholder='Enter task here' type="text" value={newTask.desc} onChange={handleChange} required />
             </div>
             <div className="flex  items-start">
-                <label htmlFor="desc">Prioriy :  </label>
+                <label htmlFor="priority">Prioriy :  </label>
                 <select  id="priority" className='focus:outline-blue-300 outline outline-offset-1 outline-none rounded' value={newTask.priority} onChange={handleChange} required >
                     <option value="low">low</option>
                     <option value="medium">medium</option>
