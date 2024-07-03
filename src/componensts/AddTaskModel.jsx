@@ -5,8 +5,10 @@ export const AddTaskModel = ({newTask,setNewTask,addTask,close}) => {
 
     const handleChange=(e)=>{
         const {id,value}=e.target
-        newTask={...newTask,[id]:value}
-        setNewTask(newTask);
+        setNewTask(prevTask => ({
+            ...prevTask,
+            [id]: value
+          }));
     }
   return (
     <>

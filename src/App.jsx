@@ -5,19 +5,13 @@ import { AddTaskModel } from './componensts/AddTaskModel'
 
 function App() {
 
-  const [tasks, setTasks] = useState({ items: [], Newtask: { desc: '', due_time: '', priority: 'low' } })
+  // const [tasks, setTasks] = useState({ items: [], Newtask: { desc: '', due_time: '', priority: 'low' } })
+  const [tasks, setTasks] = useState(() => {
+    const savedTasks = localStorage.getItem('tasks');
+    return savedTasks ? JSON.parse(savedTasks) : { items: [], Newtask: { desc: '', due_time: '', priority: 'low' } }
+  })
 
 
-  // using  storege 
-  // const [tasks, setTasks] = useState(() => {
-  //   const savedTasks = localStorage.getItem('tasks');
-  //   return savedTasks ? JSON.parse(savedTasks) : { items: [], NewTask: {desc: '', due_time: '', priority: 'low' } };
-  // });
-
-  // // Save tasks to localStorage whenever they change
-  // useEffect(() => {
-  //   localStorage.setItem('tasks', JSON.stringify(tasks));
-  // }, [tasks]);
 
   const [isTaskModelOpen, setIsTaskModelOpen] = useState(false)
 
@@ -52,10 +46,19 @@ function App() {
     }))
   }
 
-  
-  const [activeLinkIndex,setActiveLink]=useState(null);
-  const handleActiveLink=(index)=>{
+
+  const [activeLinkIndex, setActiveLink] = useState(null);
+  const handleActiveLink = (index) => {
     setActiveLink(index)
+  }
+
+
+  const DeletTask = (id) => {
+    const oldItems = tasks.items
+    const newItems = oldItems.filter((value, i) => {
+      return id !== i
+    })
+    setTasks({ items: newItems, Newtask: tasks.Newtask })
   }
   return (
     <>
@@ -64,14 +67,14 @@ function App() {
         <div className="nav-options mt-8">
           <ul className='flex space-x-2'>
             <li onClick={openTaskModel} className='grow-[2] bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 mr-6 cursor-pointer text-lg'>Add a new task</li>
-            <li className={`${activeLinkIndex===0? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `}  onClick={()=>handleActiveLink(0)} >All</li>
-            <li className={`${activeLinkIndex===1? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg`} onClick={()=>handleActiveLink(1)} >Active Tasks</li>
-            <li className={`${activeLinkIndex===2? 'active bg-blue-500 text-white':' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `}  onClick={()=>handleActiveLink(2)} >Completed</li>
+            <li className={`${activeLinkIndex === 0 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(0)} >All</li>
+            <li className={`${activeLinkIndex === 1 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg`} onClick={() => handleActiveLink(1)} >Active Tasks</li>
+            <li className={`${activeLinkIndex === 2 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(2)} >Completed</li>
           </ul>
         </div>
 
         <div className="tasks-container lg:p-3 p-2 mt-8 bg-white rounded-xl">
-          <TaskList allTasks={tasks.items} />
+          <TaskList allTasks={tasks.items} removetask={DeletTask} />
         </div>
 
         {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask} close={closeTaskModel} />}
