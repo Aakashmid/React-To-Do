@@ -12,17 +12,17 @@ export const TaskList = ({ allTasks,removetask}) => {  // props is arguement pas
       <ul className="all-tasks mt-4">
         {allTasks.map((task, id) => {
           return (
-            <li key={id} className='w-full flex space-x-2 items-start px-10 '>
+            <li key={id} className='w-full flex space-x-2 items-start px-10 my-1 '>
               <span>{id + 1}.</span>
               <p className="w-[40%] break-words text-left ">{task.desc}</p>
               <p className="w-[20%] break-words  ">{task.due_time}</p>
               <p className="w-[20%] break-words  ">{task.priority}</p>
-              <p className="w-[20%] flex justify-center items-baseline space-x-2">
+              <p className="w-[20%] flex justify-center items-end space-x-2">
                 <span className='' >
-                  <input type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-lg"/>
+                  <input type="checkbox" value="" className=" w-4 h-4  text-blue-600 bg-gray-100 border-gray-300 rounded-lg"/>
                 </span>
-                <span onClick={()=>removetask(id)} className='px-2 py-1 rounded-full hover:bg-gray-200'>
-                  <i className="fa-solid fa-trash"></i>
+                <span onClick={()=>removetask(id)} className='  px-2 py-1 rounded-full hover:bg-gray-200'>
+                  <i className="fa-solid fa-trash fa-lg"></i>
                 </span>
               </p>
             </li>

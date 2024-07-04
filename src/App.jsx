@@ -5,12 +5,19 @@ import { AddTaskModel } from './componensts/AddTaskModel'
 
 function App() {
 
-  // const [tasks, setTasks] = useState({ items: [], Newtask: { desc: '', due_time: '', priority: 'low' } })
   const [tasks, setTasks] = useState(() => {
     const savedTasks = localStorage.getItem('tasks');
     return savedTasks ? JSON.parse(savedTasks) : { items: [], Newtask: { desc: '', due_time: '', priority: 'low' } }
   })
 
+  const [CompletedTasks,setCompletedTasks]=useState(()=>{
+    const savedTasks = localStorage.getItem('completedTasks');
+    return savedTasks ? JSON.parse(savedTasks) : { items: [], Newtask: { desc: '', due_time: '', priority: 'low' } }
+  })
+  
+  useEffect(()=>{
+    localStorage.setItem('tasks',JSON.stringify(tasks))
+  },[tasks])
 
 
   const [isTaskModelOpen, setIsTaskModelOpen] = useState(false)
@@ -46,13 +53,20 @@ function App() {
     }))
   }
 
-
+  // change nav-links status
   const [activeLinkIndex, setActiveLink] = useState(null);
   const handleActiveLink = (index) => {
     setActiveLink(index)
   }
 
+  // to run a function only once when component mounts(rendered) first time we user useEffect 
+  useEffect(()=>{
+    setActiveLink(1)
+  },[])
+  
 
+
+  // delete task by its id
   const DeletTask = (id) => {
     const oldItems = tasks.items
     const newItems = oldItems.filter((value, i) => {
@@ -67,9 +81,9 @@ function App() {
         <div className="nav-options mt-8">
           <ul className='flex space-x-2'>
             <li onClick={openTaskModel} className='grow-[2] bg-white hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 mr-6 cursor-pointer text-lg'>Add a new task</li>
-            <li className={`${activeLinkIndex === 0 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(0)} >All</li>
-            <li className={`${activeLinkIndex === 1 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg`} onClick={() => handleActiveLink(1)} >Active Tasks</li>
-            <li className={`${activeLinkIndex === 2 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:bg-blue-500 hover:text-white  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(2)} >Completed</li>
+            <li className={`${activeLinkIndex === 0 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:shadow-xl  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(0)} >All</li>
+            <li className={`${activeLinkIndex === 1 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:shadow-xl  font-semibold rounded-lg p-2 cursor-pointer text-lg`} onClick={() => handleActiveLink(1)} >Active Tasks</li>
+            <li className={`${activeLinkIndex === 2 ? 'active bg-blue-500 text-white' : ' bg-white'} nav-link grow  hover:shadow-xl  font-semibold rounded-lg p-2 cursor-pointer text-lg `} onClick={() => handleActiveLink(2)} >Completed</li>
           </ul>
         </div>
 
