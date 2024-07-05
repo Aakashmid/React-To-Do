@@ -10,14 +10,37 @@ function App() {
     return savedTasks ? JSON.parse(savedTasks) : { items: [], Newtask: { desc: '', due_time: '', priority: 'low' } }
   })
 
-  const [CompletedTasks,setCompletedTasks]=useState(()=>{
+  const [CompletedTasks, setCompletedTasks] = useState(() => {  // completed task is  array of id of task which is completed
     const savedTasks = localStorage.getItem('completedTasks');
-    return savedTasks ? JSON.parse(savedTasks) : { items: [], Newtask: { desc: '', due_time: '', priority: 'low' } }
+    return savedTasks ? JSON.parse(savedTasks) : {}
   })
-  
-  useEffect(()=>{
-    localStorage.setItem('tasks',JSON.stringify(tasks))
-  },[tasks])
+
+  const SetCompletedTask = (taskId) => {
+    setCompletedTasks({ ...CompletedTasks, [taskId]: !CompletedTasks[taskId] }) // taskId is key and its value will be true or false 
+  }
+
+  const getCompletedTasks = () => {
+    const Tasks = tasks.items.filter((value, id) => {
+      return CompletedTasks[id]
+    })
+    return Tasks
+  }
+
+
+    getActiveTasks = () => {
+      const Tasks = tasks.items.filter((value, id) => {
+        return !CompletedTasks[id]  // using not operator 
+      })
+      return Tasks
+    }
+
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+  }, [tasks])
+
+  useEffect(() => {
+    localStorage.setItem('completedTasks', JSON.stringify(CompletedTasks))
+  }, [CompletedTasks])
 
 
   const [isTaskModelOpen, setIsTaskModelOpen] = useState(false)
@@ -60,10 +83,10 @@ function App() {
   }
 
   // to run a function only once when component mounts(rendered) first time we user useEffect 
-  useEffect(()=>{
+  useEffect(() => {
     setActiveLink(1)
-  },[])
-  
+  }, [])
+
 
 
   // delete task by its id
@@ -87,9 +110,20 @@ function App() {
           </ul>
         </div>
 
-        <div className="tasks-container lg:p-3 p-2 mt-8 bg-white rounded-xl">
-          <TaskList allTasks={tasks.items} removetask={DeletTask} />
-        </div>
+        {activeLinkIndex === 0 &&
+          (<div className="tasks-container lg:p-3 p-2 mt-8 bg-white rounded-xl">
+            <TaskList allTasks={tasks.items} removetask={DeletTask} SetCompletedTask={SetCompletedTask} completedTasks={CompletedTasks} />
+          </div>)}
+
+        {activeLinkIndex === 1 &&
+          (<div className="tasks-container lg:p-3 p-2 mt-8 bg-white rounded-xl">
+            <TaskList allTasks={getActiveTasks()} removetask={DeletTask} SetCompletedTask={SetCompletedTask} completedTasks={CompletedTasks} />
+          </div>)}
+
+        {activeLinkIndex === 2 &&
+          (<div className="tasks-container lg:p-3 p-2 mt-8 bg-white rounded-xl">
+            <TaskList allTasks={getCompletedTasks()} removetask={DeletTask} SetCompletedTask={SetCompletedTask} completedTasks={CompletedTasks} />
+          </div>)}
 
         {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask} close={closeTaskModel} />}
         {/* setNewTask={()=>{setNewTask}} */}
