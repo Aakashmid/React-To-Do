@@ -11,7 +11,7 @@ export const AddTaskModel = ({newTask,setNewTask,addTask,close}) => {
   return (
     <>
     <span className='fixed w-full h-full top-0 left-0 bg-black opacity-30' onClick={close}></span>
-    <div className='z-20 w-[85vw] md:w-3/4 xl:w-3/5 absolute top-1/2 left-1/2  -translate-x-1/2 -translate-y-1/3 bg-white rounded-xl lg:p-4 p-2'>
+    <div className='z-20 w-[85vw] md:w-3/4 xl:w-3/5 absolute top-1/3 left-1/2  -translate-x-1/2 -translate-y-1/3 bg-white rounded-xl lg:p-4 p-2'>
         <span className='absolute right-2 top-2 px-2 py-1  hover:bg-gray-300' onClick={close}><i className="fa-solid fa-xmark fa-lg"></i></span>
         <h1 className='font-semibold text-xl p-1 mt-6'>New Task</h1>
         <form onSubmit={addTask} className='flex-col flex space-y-4 mt-6 lg:p-3 p-2' >
