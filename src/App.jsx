@@ -12,7 +12,7 @@ function App() {
 
   const [CompletedTasks, setCompletedTasks] = useState(() => {  // completed task is  array of id of task which is completed
     const savedTasks = localStorage.getItem('completedTasks');
-    return savedTasks ? JSON.parse(savedTasks) : {}
+    return savedTasks ? JSON.parse(savedTasks) :{}
   })
 
   const SetCompletedTask = (taskId) => {
@@ -69,14 +69,6 @@ function App() {
     }))
   }
 
-
-  // to run a function only once when component mounts(rendered) first time we user useEffect 
-  useEffect(() => {
-    // setActiveLink(1)
-  }, [])
-
-
-
   // delete task by its id
   const DeletTask = (id) => {
     const oldItems = tasks.items
@@ -84,6 +76,13 @@ function App() {
       return id !== i
     })
     setTasks({ items: newItems, Newtask: tasks.Newtask })
+    const newCompletedTasks=Object.keys(CompletedTasks).reduce((filteredObj,key)=>{
+      if (id!=key) {
+        filteredObj[key]=CompletedTasks[key];
+      }
+      return filteredObj;
+    },{})
+    setCompletedTasks(newCompletedTasks);
   }
 
   const handleChange=(e)=>{
@@ -110,7 +109,7 @@ function App() {
         </div>
 
 
-        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTasjk={setNewTask} addTask={AddTask} close={closeTaskModel} />}
+        {isTaskModelOpen && < AddTaskModel   newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask} close={closeTaskModel} />}
       </div>
 
     </>
