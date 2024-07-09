@@ -110,7 +110,7 @@ function App() {
         </div>
 
 
-        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTask={setNewTask} addTask={AddTask} close={closeTaskModel} />}
+        {isTaskModelOpen && < AddTaskModel newTask={tasks.Newtask} setNewTasjk={setNewTask} addTask={AddTask} close={closeTaskModel} />}
       </div>
 
     </>
